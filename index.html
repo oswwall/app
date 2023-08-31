@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .input-section input {
+            padding: 10px;
+            width: 40%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .input-section button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .list-section {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .list {
+            flex: 1;
+            margin-right: 10px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        ul li {
+            padding: 10px;
+            border: 1px solid #ccc;
+            margin-bottom: 5px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+
+        .total-section {
+            margin-top: auto;
+            border-top: 1px solid #ccc;
+            padding-top: 10px;
+            text-align: right;
+            font-weight: bold;
+            color: #007bff;
+        }
+    </style>
+    <title>App de Distribución de Costos</title>
+</head>
+<body>
+    <div class="container">
+        <h1>App de Distribución de Costos</h1>
+        <div class="input-section">
+            <input type="text" id="nombreProducto" placeholder="Nombre del producto" onkeyup="agregarProductoEnter(event)">
+            <input type="number" id="costoProducto" placeholder="Costo del producto" step="0.01">
+            <button onclick="agregar()">Agregar</button>
+        </div>
+        <div class="list-section">
+            <div class="list">
+                <h2>Lista 1</h2>
+                <ul id="lista1"></ul>
+                <div class="total-section">
+                    <p>Total: $<span id="totalLista1">0.00</span></p>
+                </div>
+            </div>
+            <div class="list">
+                <h2>Lista 2</h2>
+                <ul id="lista2"></ul>
+                <div class="total-section">
+                    <p>Total: $<span id="totalLista2">0.00</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const lista1 = document.getElementById('lista1');
+        const lista2 = document.getElementById('lista2');
+        const totalLista1 = document.getElementById('totalLista1');
+        const totalLista2 = document.getElementById('totalLista2');
+        const nombreProducto = document.getElementById('nombreProducto');
+        const costoProducto = document.getElementById('costoProducto');
+
+        const productos = [];
+
+        function agregar() {
+            const nombre = nombreProducto.value;
+            const costo = parseFloat(costoProducto.value);
+
+            if (nombre && !isNaN(costo)) {
+                productos.push({ nombre, costo });
+                distribuirProductos();
+                nombreProducto.value = '';
+                costoProducto.value = '';
+            }
+        }
+
+        function agregarProductoEnter(event) {
+            if (event.key === 'Enter') {
+                agregar();
+            }
+        }
+
+        function eliminarProducto(index) {
+            productos.splice(index, 1);
+            distribuirProductos();
+        }
+
+        function distribuirProductos() {
+            lista1.innerHTML = '';
+            lista2.innerHTML = '';
+
+            const totalCosto = productos.reduce((total, producto) => total + producto.costo, 0);
+            const costoPromedio = totalCosto / 2;
+
+            let costoAcumuladoLista1 = 0;
+            let costoAcumuladoLista2 = 0;
+
+            productos.forEach((producto, index) => {
+                const productoHTML = `<li>${producto.nombre}: $${producto.costo.toFixed(2)} <button onclick="eliminarProducto(${index})">Eliminar</button></li>`;
+
+                if (costoAcumuladoLista1 + producto.costo <= costoPromedio) {
+                    lista1.innerHTML += productoHTML;
+                    costoAcumuladoLista1 += producto.costo;
+                } else {
+                    lista2.innerHTML += productoHTML;
+                    costoAcumuladoLista2 += producto.costo;
+                }
+            });
+
+            totalLista1.textContent = costoAcumuladoLista1.toFixed(2);
+            totalLista2.textContent = costoAcumuladoLista2.toFixed(2);
+        }
+    </script>
+</body>
+</html>
