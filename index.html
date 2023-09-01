@@ -51,6 +51,9 @@
         .list {
             flex: 1;
             margin-right: 10px;
+            border: 2px solid #ccc;
+            min-height: 150px;
+            padding: 10px;
         }
 
         ul {
@@ -65,6 +68,7 @@
             margin-bottom: 5px;
             background-color: #f9f9f9;
             border-radius: 5px;
+            cursor: move;
         }
 
         .total-section {
@@ -87,14 +91,14 @@
             <button onclick="agregar()">Agregar</button>
         </div>
         <div class="list-section">
-            <div class="list">
+            <div class="list" id="lista1" ondrop="drop(event, 'lista1')" ondragover="allowDrop(event)">
                 <h2>Lista 1</h2>
                 <ul id="lista1"></ul>
                 <div class="total-section">
                     <p>Total: $<span id="totalLista1">0.00</span></p>
                 </div>
             </div>
-            <div class="list">
+            <div class="list" id="lista2" ondrop="drop(event, 'lista2')" ondragover="allowDrop(event)">
                 <h2>Lista 2</h2>
                 <ul id="lista2"></ul>
                 <div class="total-section">
@@ -102,6 +106,7 @@
                 </div>
             </div>
         </div>
+        <button onclick="recalcular()">Recalcular</button>
     </div>
     <script>
         const lista1 = document.getElementById('lista1');
@@ -147,7 +152,7 @@
             let costoAcumuladoLista2 = 0;
 
             productos.forEach((producto, index) => {
-                const productoHTML = `<li>${producto.nombre}: $${producto.costo.toFixed(2)} <button onclick="eliminarProducto(${index})">Eliminar</button></li>`;
+                const productoHTML = `<li id="producto${index}" class="draggable" draggable="true" ondragstart="drag(event)">${producto.nombre}: $${producto.costo.toFixed(2)} <button onclick="eliminarProducto(${index})">Eliminar</button></li>`;
 
                 if (costoAcumuladoLista1 + producto.costo <= costoPromedio) {
                     lista1.innerHTML += productoHTML;
@@ -160,6 +165,36 @@
 
             totalLista1.textContent = costoAcumuladoLista1.toFixed(2);
             totalLista2.textContent = costoAcumuladoLista2.toFixed(2);
+        }
+
+        function allowDrop(event) {
+            event.preventDefault();
+        }
+
+        function drag(event) {
+            event.dataTransfer.setData("text", event.target.id);
+        }
+
+        function drop(event, lista) {
+            event.preventDefault();
+            const data = event.dataTransfer.getData("text");
+            const item = document.getElementById(data);
+
+            // Determinar en qué lista se soltó el elemento
+            const listaDestino = document.getElementById(lista);
+            listaDestino.querySelector('ul').appendChild(item);
+
+            // Volver a calcular
+            distribuirProductos();
+        }
+
+        function recalcular() {
+            // Limpia las listas y los productos
+            lista1.innerHTML = '';
+            lista2.innerHTML = '';
+            productos.length = 0;
+            // Vuelve a calcular
+            distribuirProductos();
         }
     </script>
 </body>
