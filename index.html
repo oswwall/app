@@ -5,10 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
 
         .container {
@@ -16,8 +20,13 @@
             margin: 0 auto;
             padding: 20px;
             background-color: white;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #007bff;
+            text-align: center;
         }
 
         .input-section {
@@ -28,19 +37,25 @@
         }
 
         .input-section input {
-            padding: 10px;
+            padding: 12px;
             width: 40%;
             border: 1px solid #ccc;
-            border-radius: 5px;
+            border-radius: 8px;
+            font-size: 16px;
         }
 
         .input-section button {
-            padding: 10px 20px;
+            padding: 12px 24px;
             background-color: #007bff;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .input-section button:hover {
+            background-color: #0056b3;
         }
 
         .list-section {
@@ -51,9 +66,6 @@
         .list {
             flex: 1;
             margin-right: 10px;
-            border: 2px solid #ccc;
-            min-height: 150px;
-            padding: 10px;
         }
 
         ul {
@@ -63,12 +75,29 @@
         }
 
         ul li {
-            padding: 10px;
+            padding: 12px;
             border: 1px solid #ccc;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
             background-color: #f9f9f9;
-            border-radius: 5px;
-            cursor: move;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s;
+        }
+
+        ul li:hover {
+            transform: scale(1.02);
+        }
+
+        ul li button {
+            padding: 4px 8px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
         }
 
         .total-section {
@@ -91,14 +120,14 @@
             <button onclick="agregar()">Agregar</button>
         </div>
         <div class="list-section">
-            <div class="list" id="lista1" ondrop="drop(event, 'lista1')" ondragover="allowDrop(event)">
+            <div class="list">
                 <h2>Lista 1</h2>
                 <ul id="lista1"></ul>
                 <div class="total-section">
                     <p>Total: $<span id="totalLista1">0.00</span></p>
                 </div>
             </div>
-            <div class="list" id="lista2" ondrop="drop(event, 'lista2')" ondragover="allowDrop(event)">
+            <div class="list">
                 <h2>Lista 2</h2>
                 <ul id="lista2"></ul>
                 <div class="total-section">
@@ -106,7 +135,6 @@
                 </div>
             </div>
         </div>
-        <button onclick="recalcular()">Recalcular</button>
     </div>
     <script>
         const lista1 = document.getElementById('lista1');
@@ -152,7 +180,7 @@
             let costoAcumuladoLista2 = 0;
 
             productos.forEach((producto, index) => {
-                const productoHTML = `<li id="producto${index}" class="draggable" draggable="true" ondragstart="drag(event)">${producto.nombre}: $${producto.costo.toFixed(2)} <button onclick="eliminarProducto(${index})">Eliminar</button></li>`;
+                const productoHTML = `<li>${producto.nombre}: $${producto.costo.toFixed(2)} <button onclick="eliminarProducto(${index})">Eliminar</button></li>`;
 
                 if (costoAcumuladoLista1 + producto.costo <= costoPromedio) {
                     lista1.innerHTML += productoHTML;
@@ -166,36 +194,7 @@
             totalLista1.textContent = costoAcumuladoLista1.toFixed(2);
             totalLista2.textContent = costoAcumuladoLista2.toFixed(2);
         }
-
-        function allowDrop(event) {
-            event.preventDefault();
-        }
-
-        function drag(event) {
-            event.dataTransfer.setData("text", event.target.id);
-        }
-
-        function drop(event, lista) {
-            event.preventDefault();
-            const data = event.dataTransfer.getData("text");
-            const item = document.getElementById(data);
-
-            // Determinar en qué lista se soltó el elemento
-            const listaDestino = document.getElementById(lista);
-            listaDestino.querySelector('ul').appendChild(item);
-
-            // Volver a calcular
-            distribuirProductos();
-        }
-
-        function recalcular() {
-            // Limpia las listas y los productos
-            lista1.innerHTML = '';
-            lista2.innerHTML = '';
-            productos.length = 0;
-            // Vuelve a calcular
-            distribuirProductos();
-        }
     </script>
 </body>
 </html>
+
