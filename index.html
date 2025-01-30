@@ -10,14 +10,14 @@
             padding: 0;
             background-color: #f4f4f4;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
             height: 100vh;
         }
 
         .container {
             max-width: 800px;
-            margin: 0 auto;
+            margin: 80px auto 0 auto;
             padding: 20px;
             background-color: white;
             border-radius: 8px;
@@ -113,7 +113,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>App</h1>
+        <h1>App de Distribución de Costos</h1>
         <div class="input-section">
             <input type="text" id="nombreProducto" placeholder="Nombre del producto" onkeyup="agregarProductoEnter(event)">
             <input type="number" id="costoProducto" placeholder="Costo del producto" step="0.01">
