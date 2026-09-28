@@ -1,199 +1,293 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            height: 100vh;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>App de Distribución de Costos</title>
+<style>
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #e0e7ff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+.container {
+    width: 95%;
+    max-width: 900px;
+    margin: 15px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
 
-        .container {
-            max-width: 800px;
-            margin: 80px auto 0 auto;
-            padding: 20px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
+/* 🔥 CAMBIO AQUÍ */
+.input-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
 
-        h1 {
-            color: #007bff;
-            text-align: center;
-        }
+.input-section input {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+    width: 100%;
+    box-sizing: border-box;
+}
 
-        .input-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
+.input-section button {
+    padding: 12px;
+    background-color: #6366f1;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+}
 
-        .input-section input {
-            padding: 12px;
-            width: 40%;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 16px;
-        }
+.input-section button:hover {
+    background-color: #4f46e5;
+}
+/* 🔥 FIN CAMBIO */
 
-        .input-section button {
-            padding: 12px 24px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
+.list-section {
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+}
+.list {
+    flex: 0 0 45%;
+    background: #f3f4f6;
+    border-radius: 10px;
+    padding: 6px;
+    min-height: 180px;
+}
+ul { list-style: none; padding: 0; }
 
-        .input-section button:hover {
-            background-color: #0056b3;
-        }
-
-        .list-section {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .list {
-            flex: 1;
-            margin-right: 10px;
-        }
-
-        ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        ul li {
-            padding: 12px;
-            border: 1px solid #ccc;
-            margin-bottom: 6px;
-            background-color: #f9f9f9;
-            border-radius: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: transform 0.2s;
-        }
-
-        ul li:hover {
-            transform: scale(1.02);
-        }
-
-        ul li button {
-            padding: 4px 8px;
-            background-color: #dc3545;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-
-        .total-section {
-            margin-top: auto;
-            border-top: 1px solid #ccc;
-            padding-top: 10px;
-            text-align: right;
-            font-weight: bold;
-            color: #007bff;
-        }
-    </style>
-    <title>App de Distribución de Costos</title>
+ul li {
+    padding: 7px;
+    border: 1px solid #d1d5db;
+    margin-bottom: 6px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: grab;
+}
+.delete-btn {
+    background-color: #ef4444;
+    color: white;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.total-section {
+    margin-top: 6px;
+    border-top: 1px solid #d1d5db;
+    padding-top: 4px;
+    text-align: right;
+    font-weight: bold;
+    color: #4f46e5;
+}
+.total-general {
+    text-align: center;
+    margin-top: 12px;
+    font-weight: bold;
+    font-size: 17px;
+    color: #10b981;
+}
+.diferencia-section{
+    margin-top: 15px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+    color: #ef4444;
+}
+.diferencia-section hr{
+    margin-bottom: 8px;
+    border: none;
+    border-top: 1px solid #d1d5db;
+}
+.reequilibrar-btn, .borrar-todo-btn {
+    margin-top: 10px;
+    padding: 10px 18px;
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-right: 6px;
+}
+</style>
 </head>
 <body>
-    <div class="container">
-        <h3>App de Distribución de Costos</h3>
-        <div class="input-section">
-            <input type="text" id="nombreProducto" placeholder="Nombre del producto" onkeyup="agregarProductoEnter(event)">
-            <input type="number" id="costoProducto" placeholder="Costo del producto" step="0.01" onkeyup="agregarProductoEnter(event)">
-            <button onclick="agregar()">Agregar</button>
+
+<div class="container">
+    <div class="input-section">
+        <input type="text" id="nombreProducto" placeholder="Nombre del producto">
+        <input type="number" id="costoProducto" placeholder="Costo">
+        <button onclick="agregar()">Agregar</button>
+    </div>
+
+    <div class="list-section">
+        <div class="list" ondragover="permitirSoltar(event)" ondrop="soltar(event,'lista1')">
+            <h2>Lista 1</h2>
+            <ul id="lista1"></ul>
+            <div class="total-section">Total: $<span id="totalLista1">0</span></div>
         </div>
-        <div class="list-section">
-            <div class="list">
-                <h2>Lista 1</h2>
-                <ul id="lista1"></ul>
-                <div class="total-section">
-                    <p>Total: $<span id="totalLista1">0.00</span></p>
-                </div>
-            </div>
-            <div class="list">
-                <h2>Lista 2</h2>
-                <ul id="lista2"></ul>
-                <div class="total-section">
-                    <p>Total: $<span id="totalLista2">0.00</span></p>
-                </div>
-            </div>
+        <div class="list" ondragover="permitirSoltar(event)" ondrop="soltar(event,'lista2')">
+            <h2>Lista 2</h2>
+            <ul id="lista2"></ul>
+            <div class="total-section">Total: $<span id="totalLista2">0</span></div>
         </div>
     </div>
-    <script>
-        const lista1 = document.getElementById('lista1');
-        const lista2 = document.getElementById('lista2');
-        const totalLista1 = document.getElementById('totalLista1');
-        const totalLista2 = document.getElementById('totalLista2');
-        const nombreProducto = document.getElementById('nombreProducto');
-        const costoProducto = document.getElementById('costoProducto');
 
-        const productos = [];
+    <div class="diferencia-section">
+        <hr>
+        Diferencia: $<span id="diferenciaTotal">0</span>
+    </div>
 
-        function agregar() {
-            const nombre = nombreProducto.value;
-            const costo = parseFloat(costoProducto.value);
+    <div class="total-general">
+        Total General: $<span id="totalGeneral">0</span>
+    </div>
 
-            if (nombre && !isNaN(costo)) {
-                productos.push({ nombre, costo });
-                distribuirProductos();
-                nombreProducto.value = '';
-                costoProducto.value = '';
-            }
+    <button class="reequilibrar-btn" onclick="reequilibrar()">Reequilibrar</button>
+    <button class="borrar-todo-btn" onclick="borrarTodo()">Borrar Todos</button>
+</div>
+
+<script>
+let productos = JSON.parse(localStorage.getItem("productos")) || [];
+let dragIndex = null;
+
+function guardarDatos(){
+    localStorage.setItem("productos", JSON.stringify(productos));
+}
+
+function agregar(){
+    const nombreInput = document.getElementById('nombreProducto');
+    const costoInput = document.getElementById('costoProducto');
+
+    const nombre = nombreInput.value.trim();
+    const costo = Math.round(parseFloat(costoInput.value));
+
+    if(!nombre || isNaN(costo) || costo <= 0) return;
+
+    productos.push({ nombre, costo, lista: null });
+
+    nombreInput.value = "";
+    costoInput.value = "";
+    nombreInput.focus();
+
+    guardarDatos();
+    distribuirProductos();
+}
+
+function eliminarProducto(index){
+    productos.splice(index,1);
+    guardarDatos();
+    distribuirProductos();
+}
+
+function distribuirProductos(){
+    const lista1 = document.getElementById('lista1');
+    const lista2 = document.getElementById('lista2');
+    lista1.innerHTML = "";
+    lista2.innerHTML = "";
+
+    let total1 = 0;
+    let total2 = 0;
+
+    productos.forEach((p,i)=>{
+        const li = document.createElement("li");
+        li.draggable = true;
+        li.ondragstart = e=> dragIndex=i;
+
+        li.innerHTML = `<span>${p.nombre}: $${p.costo}</span>`;
+
+        const btn = document.createElement("button");
+        btn.textContent="Eliminar";
+        btn.className="delete-btn";
+        btn.onclick=()=> eliminarProducto(i);
+
+        li.appendChild(btn);
+
+        if(p.lista==='lista1' || (p.lista===null && total1<=total2)){
+            p.lista='lista1';
+            total1+=p.costo;
+            lista1.appendChild(li);
+        } else {
+            p.lista='lista2';
+            total2+=p.costo;
+            lista2.appendChild(li);
         }
+    });
 
-        function agregarProductoEnter(event) {
-            if (event.key === 'Enter') {
-                agregar();
-            }
+    document.getElementById('totalLista1').textContent=total1;
+    document.getElementById('totalLista2').textContent=total2;
+    document.getElementById('totalGeneral').textContent=total1+total2;
+    document.getElementById('diferenciaTotal').textContent=Math.abs(total1-total2);
+
+    guardarDatos();
+}
+
+function permitirSoltar(e){ e.preventDefault(); }
+function soltar(e,listaDestino){
+    e.preventDefault();
+    if(dragIndex!==null){
+        productos[dragIndex].lista=listaDestino;
+        distribuirProductos();
+        dragIndex=null;
+    }
+}
+
+function reequilibrar(){
+    productos.sort((a,b)=>b.costo-a.costo);
+    let total1=0,total2=0;
+    productos.forEach(p=>{
+        if(total1<=total2){
+            p.lista="lista1";
+            total1+=p.costo;
+        } else {
+            p.lista="lista2";
+            total2+=p.costo;
         }
+    });
+    distribuirProductos();
+}
 
-        function eliminarProducto(index) {
-            productos.splice(index, 1);
-            distribuirProductos();
-        }
+function borrarTodo(){
+    if(confirm("¿Borrar todo?")){
+        productos=[];
+        guardarDatos();
+        distribuirProductos();
+    }
+}
 
-        function distribuirProductos() {
-            lista1.innerHTML = '';
-            lista2.innerHTML = '';
+document.getElementById('nombreProducto').addEventListener('keydown', function(e){
+    if(e.key === "Enter"){
+        e.preventDefault();
+        document.getElementById('costoProducto').focus();
+    }
+});
 
-            const totalCosto = productos.reduce((total, producto) => total + producto.costo, 0);
-            const costoPromedio = totalCosto / 2;
+document.getElementById('costoProducto').addEventListener('keydown', function(e){
+    if(e.key === "Enter"){
+        e.preventDefault();
+        agregar();
+    }
+});
 
-            let costoAcumuladoLista1 = 0;
-            let costoAcumuladoLista2 = 0;
+distribuirProductos();
+</script>
 
-            productos.forEach((producto, index) => {
-                const productoHTML = `<li>${producto.nombre}: $${producto.costo.toFixed(2)} <button onclick="eliminarProducto(${index})">Eliminar</button></li>`;
-
-                if (costoAcumuladoLista1 + producto.costo <= costoPromedio) {
-                    lista1.innerHTML += productoHTML;
-                    costoAcumuladoLista1 += producto.costo;
-                } else {
-                    lista2.innerHTML += productoHTML;
-                    costoAcumuladoLista2 += producto.costo;
-                }
-            });
-
-            totalLista1.textContent = costoAcumuladoLista1.toFixed(2);
-            totalLista2.textContent = costoAcumuladoLista2.toFixed(2);
-        }
-    </script>
 </body>
 </html>
